@@ -1,0 +1,18 @@
+# build trees
+build/
+cmake-build-*/
+
+# compiled objects
+*.o
+*.a
+
+# runtime data created by the server
+tinykv-data/
+*.aof
+*.tkv
+*.tkv.tmp
+
+# editor / OS noise
+.DS_Store
+.vscode/
+*.swp
