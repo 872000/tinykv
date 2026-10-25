@@ -198,6 +198,19 @@ void store_keys_pattern() {
     CHECK(none.empty());
 }
 
+void store_keys_exact_and_mid_wildcard() {
+    KVStore s(fresh_dir());
+    s.set("user:1", "a");
+    s.set("user:2", "b");
+    s.set("order:1", "c");
+    // A pattern with no wildcard matches exactly one key.
+    auto exact = s.keys("user:1");
+    CHECK(exact.size() == 1 && exact[0] == "user:1");
+    // A '*' in the middle of the pattern still anchors both ends.
+    auto mid = s.keys("u*r:1");
+    CHECK(mid.size() == 1 && mid[0] == "user:1");
+}
+
 void store_sweep() {
     KVStore s(fresh_dir());
     s.set("a", "1");
@@ -300,6 +313,7 @@ int main() {
     RUN(store_expiry_actually_expires);
     RUN(store_incr);
     RUN(store_keys_pattern);
+    RUN(store_keys_exact_and_mid_wildcard);
     RUN(store_sweep);
     RUN(persistence_snapshot_roundtrip);
     RUN(persistence_aof_replay);
